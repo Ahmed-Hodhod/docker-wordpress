@@ -1,0 +1,37 @@
+
+services:
+  wordpress1:
+    image: wordpress
+    container_name: wordpress1
+    environment:
+      WORDPRESS_DB_HOST: 10.0.133.166
+      WORDPRESS_DB_USER: hodhod
+      WORDPRESS_DB_PASSWORD: hodhod0114496
+      WORDPRESS_DB_NAME: hodhod
+    ports:
+      - "80:80"
+
+  wordpress2:
+    image: wordpress
+    container_name: wordpress2
+    environment:
+      WORDPRESS_DB_HOST: 10.0.133.166
+      WORDPRESS_DB_USER: hodhod
+      WORDPRESS_DB_PASSWORD: hodhod0114496
+      WORDPRESS_DB_NAME: hodhod
+    ports:
+      - "8081:80"
+    volumes:
+      - /var/www/html/:/var/www/html/
+
+    depends_on:
+      wordpress1:
+        condition: service_started
+
+  nginx:
+    build:
+      context: .
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
